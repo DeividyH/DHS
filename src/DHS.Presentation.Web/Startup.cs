@@ -9,7 +9,6 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System;
 
 namespace DHS.Presentation.Web
 {
@@ -26,11 +25,7 @@ namespace DHS.Presentation.Web
         public void ConfigureServices(IServiceCollection services)
         {
             var connection = Configuration["ConnectionStrings:Default"];
-            services.AddDbContext<DhsDbContext>(options => options.UseMySql(connection,
-                new MySqlServerVersion(new Version(8, 0, 23)))
-                    .EnableSensitiveDataLogging()
-                    .EnableDetailedErrors());
-
+            services.AddDbContext<DhsDbContext>(options => options.UseSqlServer(connection));
             
             services.AddControllers();
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_3_0);
@@ -43,6 +38,8 @@ namespace DHS.Presentation.Web
                     Version = "v1"
                 });
             });
+
+            services.AddAutoMapper(typeof(Startup));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

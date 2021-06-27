@@ -1,11 +1,10 @@
-﻿using AutoMapper;
-using DHS.Domain.Core.Interfaces;
+﻿using DHS.Domain.Core.Interfaces;
 using DHS.Domain.Core.Interfaces.Audit;
 using DHS.Domain.Core.Interfaces.Audit.Dtos;
 using DHS.Domain.Core.Interfaces.Repositories;
+using DHS.Domain.Core.Mapper;
 using DHS.Domain.Core.Services.Dtos.Audit;
 using DHS.Domain.Core.Services.Dtos.Pages;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DHS.Domain.Core.Services
@@ -81,7 +80,8 @@ namespace DHS.Domain.Core.Services
     }
 
     public abstract class Service<TEntity, TEntityDto, TPrimaryKey, TGetAllInput, TCreateInput, TUpdateInput, TGetInput, TDeleteInput>
-        : IService<TEntityDto, TPrimaryKey, TGetAllInput, TCreateInput, TUpdateInput, TGetInput, TDeleteInput>
+        : Mapping<TEntity, TEntityDto, TCreateInput, TUpdateInput, TDeleteInput>, 
+        IService<TEntityDto, TPrimaryKey, TGetAllInput, TCreateInput, TUpdateInput, TGetInput, TDeleteInput>
             where TEntity : class, IEntity<TPrimaryKey>
             where TEntityDto : IEntityDto<TPrimaryKey>
             where TUpdateInput : IEntityDto<TPrimaryKey>
@@ -89,7 +89,6 @@ namespace DHS.Domain.Core.Services
             where TDeleteInput : IEntityDto<TPrimaryKey>
     {
         private readonly IRepository<TEntity, TPrimaryKey> _repository;
-        private readonly IMapper _mapper;
 
         protected Service(IRepository<TEntity, TPrimaryKey> repository)
         {
@@ -100,7 +99,7 @@ namespace DHS.Domain.Core.Services
         {
             var entity = await _repository.GetAsync(input.Id);
 
-            var dto = _mapper.Map<TEntityDto>(entity);
+            var dto = MapEntityToEntityDto(entity);
 
             return dto;
         }
@@ -109,29 +108,29 @@ namespace DHS.Domain.Core.Services
         {
             var entityList = await _repository.GetAllListAsync();
 
-            var dtoList = _mapper.Map<List<TEntityDto>>(entityList);
+            var dtoList = MapEntityToEntityDtoList(entityList);
 
             return new PagedResultDto<TEntityDto>(entityList.Count, dtoList.AsReadOnly());
         }
 
         public virtual async Task<TEntityDto> Create(TCreateInput input)
         {
-            var entity = _mapper.Map<TEntity>(input);
+            var entity = MapEntityDtoToEntity(input);
 
             await _repository.InsertAsync(entity);
 
-            var dto = _mapper.Map<TEntityDto>(entity);
+            var dto = MapEntityToEntityDto(entity);
 
             return dto;
         }
         
         public virtual async Task<TEntityDto> Update(TUpdateInput input)
         {
-            var entity = _mapper.Map<TEntity>(input);
+            var entity = MapEntityDtoToEntity(input);
 
             await _repository.UpdateAsync(entity);
 
-            var dto = _mapper.Map<TEntityDto>(entity);
+            var dto = MapEntityToEntityDto(entity);
 
             return dto;
         }

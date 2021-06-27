@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using DHS.Domain.Core.Interfaces.Audit;
+﻿using DHS.Domain.Core.Interfaces.Audit;
 using DHS.Domain.Core.Interfaces.Audit.Dtos;
 using DHS.Domain.Core.Interfaces.Filters;
 using DHS.Domain.Core.Interfaces.Pages;
@@ -133,8 +132,7 @@ namespace DHS.Domain.Services
     where TDeleteInput : IEntityDto<TPrimaryKey>
     {
         private readonly IRepository<TEntity, TPrimaryKey> _repository;
-        private readonly IMapper _mapper;
-
+        
         protected DhsCrudAppService(IRepository<TEntity, TPrimaryKey> repository)
             : base(repository)
         {
@@ -206,7 +204,6 @@ namespace DHS.Domain.Services
 
         #endregion
 
-        
         public virtual async Task<List<TEntityDto>> ProcessToReturn(List<TEntityDto> dtoList)
         {
             return dtoList;
@@ -226,7 +223,7 @@ namespace DHS.Domain.Services
 
             var entityList = query.ToList();
 
-            var dtoList = _mapper.Map<List<TEntityDto>>(entityList);
+            var dtoList = MapEntityToEntityDtoList(entityList);
 
             var processToReturn = await ProcessToReturn(dtoList);
 

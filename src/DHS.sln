@@ -29,7 +29,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DHS.Domain.Core", "DHS.Doma
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DHS.Infrastructure.Crosscutting", "DHS.Infrastructure.CrossCutting\DHS.Infrastructure.Crosscutting.csproj", "{70730B17-BE46-4BB7-97E6-5438D95D3153}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DHS.Presentation.Web", "DHS.Presentation.Web\DHS.Presentation.Web.csproj", "{09EF2AC7-8712-433E-B94D-A3EC5D345600}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DHS.Presentation.Web", "DHS.Presentation.Web\DHS.Presentation.Web.csproj", "{09EF2AC7-8712-433E-B94D-A3EC5D345600}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
