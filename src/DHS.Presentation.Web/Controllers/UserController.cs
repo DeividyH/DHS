@@ -31,9 +31,31 @@ namespace DHS.Presentation.Web.Controllers
         [HttpGet("Get")]
         public async Task<UserDto> Get([FromQuery]EntityDto<long> input)
         {
-            var dto = await _userAppService.Get(input);
+            var processReturn = await _userAppService.Get(input);
 
-            return dto;
+            return processReturn;
+        }
+
+        [HttpPost("Create")]
+        public async Task<UserDto> Create([FromQuery]UserDto input)
+        {
+            var processReturn = await _userAppService.Create(input);
+
+            return processReturn;
+        }
+
+        [HttpPut("Update")] 
+        public async Task<UserDto> Update([FromQuery]UserDto input)
+        {
+            var processReturn = await _userAppService.Update(input);
+
+            return processReturn;
+        }
+
+        [HttpDelete("Delete")]
+        public async Task Delete([FromQuery]EntityDto<long> input)
+        {
+            await _userAppService.Delete(input);
         }
     }
 }
